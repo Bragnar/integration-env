@@ -14,8 +14,6 @@ services:
     restart: on-failure
 
   portainer:
-  
-
     image: portainer/portainer
     container_name: "portainer-service"
     command: --admin-password '$$2y$$05$$R0vA31aOpCmU8OUUo210FeELJ02ueoQl8Fp6xtKxznQBccZ91nkSu'
@@ -30,6 +28,8 @@ services:
     expose:
       - "80" 
       - "50000" 
+    volumes :
+      - jenkins_data:/var/jenkins_home
     networks:
       - nginx_network
     restart: on-failure
@@ -37,3 +37,7 @@ services:
 networks:
   nginx_network:
     driver: bridge
+    
+volumes:
+  jenkins_data:
+    driver : local
