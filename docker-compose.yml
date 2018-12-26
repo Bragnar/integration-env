@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nginx:
+    image: library/nginx:latest
+    container_name: nginx-service
+    volumes:
+      -  ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - nginx_network
+    restart: on-failure
+
+  portainer:
+  
+
+    image: portainer/portainer
+    container_name: "portainer-service"
+    command: --admin-password '$$2y$$05$$R0vA31aOpCmU8OUUo210FeELJ02ueoQl8Fp6xtKxznQBccZ91nkSu'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - nginx_network
+    
+  jenkins:
+    image: jenkins/jenkins:latest
+    container_name: jenkins-service
+    expose:
+      - "80" 
+      - "50000" 
+    networks:
+      - nginx_network
+    restart: on-failure
+    
+networks:
+  nginx_network:
+    driver: bridge
