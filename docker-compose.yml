@@ -22,6 +22,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 9000
+    expose:
+      - 443
     networks:
       - nginx_network
     restart: always
@@ -34,7 +36,29 @@ services:
       - 50000
     volumes :
       - jenkins_data:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - nginx_network
+    restart: on-failure
+
+  registry:
+    image: registry:2
+    container_name: registry-service
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - registry_data:/var/lib/registry
+    networks:
+      - nginx_network
+
+  docker:
+    image: docker:stable-dind
+    container_name: docker-service
+    privileged: true
+    expose:
+      - 2375
+    volumes:
+      - ${PWD}/docker/daemon.json:/etc/docker/daemon.json
     networks:
       - nginx_network
     restart: on-failure
@@ -42,9 +66,12 @@ services:
 networks:
   nginx_network:
     driver: bridge
+    internal: false
     
 volumes:
   jenkins_data:
     driver : local
   portainer_data:
+    driver : local
+  registry_data:
     driver : local
