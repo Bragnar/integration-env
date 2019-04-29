@@ -10,15 +10,14 @@ pipeline {
                         recordIssues aggregatingResults: false, enabledForFailure: true, tools: [gcc4(id: 'gcc')]
                     }
                 }
-                stage('SLOC counting') {
-                    agent { node { label 'sloccount' } }
+                stage('CLOC counting') {
+                    agent { node { label 'cloc' } }
                     steps {
                         git 'https://github.com/LuaDist/libsqlite3.git'
-                        sh 'sloccount --duplicates --wide --details . > sloccount.sc'
-                        sloccountPublish encoding: '', pattern: 'sloccount.sc'
+                        sh 'cloc --by-file --xml --out=cloc.xml .'
+                        sloccountPublish encoding: '', pattern: 'cloc.xml'
                     }
                 }
-                /*
                 stage('CPPCheck Analysis') {
                     agent { node { label 'cppcheck' } }
                     steps {
@@ -27,7 +26,6 @@ pipeline {
                         recordIssues aggregatingResults: false, enabledForFailure: true, tools: [cppCheck(id: 'cppcheck')]
                     }
                 }
-                */
             }
         }
     }
