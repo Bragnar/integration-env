@@ -63,6 +63,33 @@ services:
       - nginx_network
     restart: on-failure
 
+  sonarqube:
+    image: sonarqube
+    container_name: sonarqube-service
+    ports:
+      - "9000:9000"
+    networks:
+      - nginx_network
+    environment:
+      - sonar.jdbc.url=jdbc:postgresql://sonarqube-db-service:5432/sonar
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
+  sonarqube-db:
+    image: postgres
+    container_name: sonarqube-db-service
+    networks:
+      - nginx_network
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      # This needs explicit mapping due to https://github.com/docker-library/postgres/blob/4e48e3228a30763913ece952c611e5e9b95c8759/Dockerfile.template#L52
+      - postgresql_data:/var/lib/postgresql/data
+
 networks:
   nginx_network:
     driver: bridge
@@ -75,3 +102,8 @@ volumes:
     driver : local
   registry_data:
     driver : local
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  postgresql:
+  postgresql_data:
