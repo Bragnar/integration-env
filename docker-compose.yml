@@ -51,6 +51,34 @@ services:
     networks:
       - nginx_network
 
+  redmine:
+    image: redmine:latest
+    container_name: redmine-service
+    restart: always
+    expose:
+      - 3000
+    volumes:
+      - redmine_data:/usr/src/redmine
+    environment:
+      HTTP_PROXY: http://10.74.66.230:3128
+      HTTPS_PROXY: https://10.74.66.230:3128
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: example
+    networks:
+      - nginx_network
+
+  db:
+    image: mysql:5.7
+    container_name: redmine-mysql-service
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: redmine
+    volumes:
+      - redmine_mysql_data:/var/lib/mysql
+    networks:
+      - nginx_network
+
   docker:
     image: docker:stable-dind
     container_name: docker-service
@@ -74,4 +102,8 @@ volumes:
   portainer_data:
     driver : local
   registry_data:
+    driver : local
+  redmine_data:
+    driver : local
+  redmine_mysql_data:
     driver : local
