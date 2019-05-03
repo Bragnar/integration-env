@@ -58,7 +58,7 @@ services:
     expose:
       - 2375
     volumes:
-      - ${PWD}/docker/daemon.json:/etc/docker/daemon.json
+      - ./docker/daemon.json:/etc/docker/daemon.json
     networks:
       - nginx_network
     restart: on-failure
