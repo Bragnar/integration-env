@@ -1,7 +1,23 @@
 <?xml version='1.1' encoding='UTF-8'?>
 <hudson>
-  <disabledAdministrativeMonitors/>
-  <version>2.156</version>
+  <temporaryOfflineCause class="hudson.slaves.OfflineCause$UserCause">
+    <timestamp>1556885010923</timestamp>
+    <description>
+      <holder>
+        <owner>hudson.slaves.Messages</owner>
+      </holder>
+      <key>SlaveComputer.DisconnectedBy</key>
+      <args>
+        <string>bragnar</string>
+        <string></string>
+      </args>
+    </description>
+    <userId>bragnar</userId>
+  </temporaryOfflineCause>
+  <disabledAdministrativeMonitors>
+    <string>hudsonHomeIsFull</string>
+  </disabledAdministrativeMonitors>
+  <version>2.175</version>
   <installStateName>RUNNING</installStateName>
   <numExecutors>0</numExecutors>
   <mode>NORMAL</mode>
@@ -21,7 +37,7 @@
   <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
   <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
   <clouds>
-    <com.nirima.jenkins.plugins.docker.DockerCloud plugin="docker-plugin@1.1.5">
+    <com.nirima.jenkins.plugins.docker.DockerCloud plugin="docker-plugin@1.1.6">
       <name>docker</name>
       <templates>
         <com.nirima.jenkins.plugins.docker.DockerTemplate>
@@ -39,7 +55,7 @@
           </connector>
           <remoteFs>/home/jenkins</remoteFs>
           <instanceCap>5</instanceCap>
-          <mode>NORMAL</mode>
+          <mode>EXCLUSIVE</mode>
           <retentionStrategy class="com.nirima.jenkins.plugins.docker.strategy.DockerOnceRetentionStrategy">
             <idleMinutes>10</idleMinutes>
           </retentionStrategy>
@@ -52,6 +68,7 @@
             <network></network>
             <volumes/>
             <volumesFrom2/>
+            <devices/>
             <environment/>
             <bindPorts></bindPorts>
             <bindAllPorts>false</bindAllPorts>
@@ -59,24 +76,10 @@
             <tty>false</tty>
             <extraHosts class="empty-list"/>
           </dockerTemplateBase>
-          <removeVolumes>false</removeVolumes>
+          <removeVolumes>true</removeVolumes>
           <pullStrategy>PULL_ALWAYS</pullStrategy>
           <pullTimeout>300</pullTimeout>
-          <nodeProperties>
-            <hudson.slaves.EnvironmentVariablesNodeProperty>
-              <envVars serialization="custom">
-                <unserializable-parents/>
-                <tree-map>
-                  <default>
-                    <comparator class="hudson.util.CaseInsensitiveComparator"/>
-                  </default>
-                  <int>1</int>
-                  <string></string>
-                  <string></string>
-                </tree-map>
-              </envVars>
-            </hudson.slaves.EnvironmentVariablesNodeProperty>
-          </nodeProperties>
+          <nodeProperties class="empty-list"/>
           <disabled>
             <disabledByChoice>false</disabledByChoice>
           </disabled>
@@ -110,6 +113,7 @@
             <network></network>
             <volumes/>
             <volumesFrom2/>
+            <devices/>
             <environment/>
             <bindPorts></bindPorts>
             <bindAllPorts>false</bindAllPorts>
@@ -117,7 +121,7 @@
             <tty>false</tty>
             <extraHosts class="empty-list"/>
           </dockerTemplateBase>
-          <removeVolumes>false</removeVolumes>
+          <removeVolumes>true</removeVolumes>
           <pullStrategy>PULL_ALWAYS</pullStrategy>
           <pullTimeout>300</pullTimeout>
           <nodeProperties class="empty-list"/>
@@ -154,6 +158,52 @@
             <network></network>
             <volumes/>
             <volumesFrom2/>
+            <devices/>
+            <environment/>
+            <bindPorts></bindPorts>
+            <bindAllPorts>false</bindAllPorts>
+            <privileged>false</privileged>
+            <tty>false</tty>
+            <extraHosts class="empty-list"/>
+          </dockerTemplateBase>
+          <removeVolumes>true</removeVolumes>
+          <pullStrategy>PULL_ALWAYS</pullStrategy>
+          <pullTimeout>300</pullTimeout>
+          <nodeProperties class="empty-list"/>
+          <disabled>
+            <disabledByChoice>false</disabledByChoice>
+          </disabled>
+          <name>sloccount-ssh</name>
+        </com.nirima.jenkins.plugins.docker.DockerTemplate>
+        <com.nirima.jenkins.plugins.docker.DockerTemplate>
+          <configVersion>2</configVersion>
+          <labelString>cloc</labelString>
+          <connector class="io.jenkins.docker.connector.DockerComputerSSHConnector">
+            <sshKeyStrategy class="io.jenkins.docker.connector.DockerComputerSSHConnector$InjectSSHKey">
+              <user>jenkins</user>
+            </sshKeyStrategy>
+            <port>22</port>
+            <jvmOptions></jvmOptions>
+            <javaPath></javaPath>
+            <prefixStartSlaveCmd></prefixStartSlaveCmd>
+            <suffixStartSlaveCmd></suffixStartSlaveCmd>
+          </connector>
+          <remoteFs></remoteFs>
+          <instanceCap>5</instanceCap>
+          <mode>NORMAL</mode>
+          <retentionStrategy class="com.nirima.jenkins.plugins.docker.strategy.DockerOnceRetentionStrategy">
+            <idleMinutes>10</idleMinutes>
+          </retentionStrategy>
+          <dockerTemplateBase>
+            <image>registry-service:5000/ssh-slave-sloc</image>
+            <pullCredentialsId></pullCredentialsId>
+            <dockerCommand></dockerCommand>
+            <hostname></hostname>
+            <dnsHosts/>
+            <network></network>
+            <volumes/>
+            <volumesFrom2/>
+            <devices/>
             <environment/>
             <bindPorts></bindPorts>
             <bindAllPorts>false</bindAllPorts>
@@ -168,12 +218,149 @@
           <disabled>
             <disabledByChoice>false</disabledByChoice>
           </disabled>
-          <name>sloccount-ssh</name>
+          <name>cloc-ssh</name>
+        </com.nirima.jenkins.plugins.docker.DockerTemplate>
+        <com.nirima.jenkins.plugins.docker.DockerTemplate>
+          <configVersion>2</configVersion>
+          <labelString>gcovr</labelString>
+          <connector class="io.jenkins.docker.connector.DockerComputerSSHConnector">
+            <sshKeyStrategy class="io.jenkins.docker.connector.DockerComputerSSHConnector$InjectSSHKey">
+              <user>jenkins</user>
+            </sshKeyStrategy>
+            <port>22</port>
+            <jvmOptions></jvmOptions>
+            <javaPath></javaPath>
+            <prefixStartSlaveCmd></prefixStartSlaveCmd>
+            <suffixStartSlaveCmd></suffixStartSlaveCmd>
+          </connector>
+          <remoteFs></remoteFs>
+          <instanceCap>5</instanceCap>
+          <mode>NORMAL</mode>
+          <retentionStrategy class="com.nirima.jenkins.plugins.docker.strategy.DockerOnceRetentionStrategy">
+            <idleMinutes>10</idleMinutes>
+          </retentionStrategy>
+          <dockerTemplateBase>
+            <image>registry-service:5000/ssh-slave-gcovr</image>
+            <pullCredentialsId></pullCredentialsId>
+            <dockerCommand></dockerCommand>
+            <hostname></hostname>
+            <dnsHosts/>
+            <network></network>
+            <volumes/>
+            <volumesFrom2/>
+            <devices/>
+            <environment/>
+            <bindPorts></bindPorts>
+            <bindAllPorts>false</bindAllPorts>
+            <privileged>false</privileged>
+            <tty>false</tty>
+            <extraHosts class="empty-list"/>
+          </dockerTemplateBase>
+          <removeVolumes>false</removeVolumes>
+          <pullStrategy>PULL_ALWAYS</pullStrategy>
+          <pullTimeout>300</pullTimeout>
+          <nodeProperties class="empty-list"/>
+          <disabled>
+            <disabledByChoice>false</disabledByChoice>
+          </disabled>
+          <name>gcovr-ssh</name>
+        </com.nirima.jenkins.plugins.docker.DockerTemplate>
+        <com.nirima.jenkins.plugins.docker.DockerTemplate>
+          <configVersion>2</configVersion>
+          <labelString>valgrind</labelString>
+          <connector class="io.jenkins.docker.connector.DockerComputerSSHConnector">
+            <sshKeyStrategy class="io.jenkins.docker.connector.DockerComputerSSHConnector$InjectSSHKey">
+              <user>jenkins</user>
+            </sshKeyStrategy>
+            <port>22</port>
+            <jvmOptions></jvmOptions>
+            <javaPath></javaPath>
+            <prefixStartSlaveCmd></prefixStartSlaveCmd>
+            <suffixStartSlaveCmd></suffixStartSlaveCmd>
+          </connector>
+          <remoteFs></remoteFs>
+          <instanceCap>2147483647</instanceCap>
+          <mode>NORMAL</mode>
+          <retentionStrategy class="com.nirima.jenkins.plugins.docker.strategy.DockerOnceRetentionStrategy">
+            <idleMinutes>10</idleMinutes>
+          </retentionStrategy>
+          <dockerTemplateBase>
+            <image>registry-service:5000/ssh-slave-valgrind</image>
+            <pullCredentialsId></pullCredentialsId>
+            <dockerCommand></dockerCommand>
+            <hostname></hostname>
+            <dnsHosts/>
+            <network></network>
+            <volumes/>
+            <volumesFrom2/>
+            <devices/>
+            <environment/>
+            <bindPorts></bindPorts>
+            <bindAllPorts>false</bindAllPorts>
+            <privileged>false</privileged>
+            <tty>false</tty>
+            <extraHosts class="empty-list"/>
+          </dockerTemplateBase>
+          <removeVolumes>false</removeVolumes>
+          <pullStrategy>PULL_ALWAYS</pullStrategy>
+          <pullTimeout>300</pullTimeout>
+          <nodeProperties class="empty-list"/>
+          <disabled>
+            <disabledByChoice>false</disabledByChoice>
+          </disabled>
+          <name>valgrind-ssh</name>
+        </com.nirima.jenkins.plugins.docker.DockerTemplate>
+        <com.nirima.jenkins.plugins.docker.DockerTemplate>
+          <configVersion>2</configVersion>
+          <labelString>sonarqube-scanner</labelString>
+          <connector class="io.jenkins.docker.connector.DockerComputerSSHConnector">
+            <sshKeyStrategy class="io.jenkins.docker.connector.DockerComputerSSHConnector$InjectSSHKey">
+              <user>jenkins</user>
+            </sshKeyStrategy>
+            <port>22</port>
+            <jvmOptions></jvmOptions>
+            <javaPath></javaPath>
+            <prefixStartSlaveCmd></prefixStartSlaveCmd>
+            <suffixStartSlaveCmd></suffixStartSlaveCmd>
+          </connector>
+          <remoteFs>/home/jenkins</remoteFs>
+          <instanceCap>2147483647</instanceCap>
+          <mode>NORMAL</mode>
+          <retentionStrategy class="com.nirima.jenkins.plugins.docker.strategy.DockerOnceRetentionStrategy">
+            <idleMinutes>10</idleMinutes>
+          </retentionStrategy>
+          <dockerTemplateBase>
+            <image>registry-service:5000/ssh-slave-sonarqube-scanner</image>
+            <pullCredentialsId></pullCredentialsId>
+            <dockerCommand></dockerCommand>
+            <hostname></hostname>
+            <dnsHosts/>
+            <network></network>
+            <volumes/>
+            <volumesFrom2/>
+            <devices/>
+            <environment/>
+            <bindPorts></bindPorts>
+            <bindAllPorts>false</bindAllPorts>
+            <privileged>false</privileged>
+            <tty>false</tty>
+            <extraHosts>
+              <string>sonarqube.coreos.local:10.74.66.16</string>
+            </extraHosts>
+          </dockerTemplateBase>
+          <removeVolumes>false</removeVolumes>
+          <pullStrategy>PULL_ALWAYS</pullStrategy>
+          <pullTimeout>300</pullTimeout>
+          <nodeProperties class="empty-list"/>
+          <disabled>
+            <disabledByChoice>false</disabledByChoice>
+          </disabled>
+          <name>ssh-slave-sonarqube-scanner</name>
         </com.nirima.jenkins.plugins.docker.DockerTemplate>
       </templates>
       <dockerApi>
-        <dockerHost plugin="docker-commons@1.13">
-          <uri>tcp://docker-service:2375/</uri>
+        <dockerHost plugin="docker-commons@1.14">
+          <uri>tcp://docker-service:2375</uri>
         </dockerHost>
         <connectTimeout>60</connectTimeout>
         <readTimeout>60</readTimeout>
