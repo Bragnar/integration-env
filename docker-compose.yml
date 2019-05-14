@@ -14,7 +14,7 @@ services:
     restart: on-failure
 
   portainer:
-    image: portainer/portainer
+    image: portainer/portainer:latest
     container_name: "portainer-service"
     command: --admin-password '$$2y$$05$$R0vA31aOpCmU8OUUo210FeELJ02ueoQl8Fp6xtKxznQBccZ91nkSu' -H unix:///var/run/docker.sock
     volumes:
@@ -64,7 +64,7 @@ services:
     restart: on-failure
 
   sonarqube:
-    image: sonarqube
+    image: sonarqube:latest
     container_name: sonarqube-service
     ports:
       - "9000:9000"
@@ -78,7 +78,7 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
 
   sonarqube-db:
-    image: postgres
+    image: postgres:latest
     container_name: sonarqube-db-service
     networks:
       - nginx_network
