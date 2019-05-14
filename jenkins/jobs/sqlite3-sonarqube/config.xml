@@ -1,0 +1,72 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Build test jobs based on sqlite3 tool</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.31">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.4">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/LuaDist/libsqlite3.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <assignedNode>sonarqube-scanner</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>true</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>mkdir build</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cppcheck --xml --xml-version=2 --enable=all shell.c sqlite3.c 2&gt;build/cppcheck.xml</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>./configure
+make &amp;&gt;build/gcc.log</command>
+    </hudson.tasks.Shell>
+    <hudson.plugins.sonar.SonarRunnerBuilder plugin="sonar@2.8.1">
+      <project></project>
+      <properties>sonar.projectKey=sqlite3
+sonar.login=4df913cfa03351c6a4526bfff616d927b6b1f6de
+sonar.c.cppcheck.reportPath=build/cppcheck.xml
+sonar.cxx.gcc.reportPath=build/gcc.log
+sonar.cxx.gcc.regex=(?&lt;file&gt;.*):(?&lt;line&gt;[0-9]+):\\x20warning:\\x20(?&lt;message&gt;.*)\\x20\\[(?&lt;id&gt;.*)\\]
+sonar.sourceEncoding=UTF-8</properties>
+      <javaOpts></javaOpts>
+      <additionalArguments></additionalArguments>
+      <jdk>(Hérite du job)</jdk>
+      <task></task>
+    </hudson.plugins.sonar.SonarRunnerBuilder>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper plugin="build-timeout@1.19">
+      <strategy class="hudson.plugins.build_timeout.impl.NoActivityTimeOutStrategy">
+        <timeoutSecondsString>180</timeoutSecondsString>
+      </strategy>
+      <timeoutEnvVar>BUILD_TIMEOUT</timeoutEnvVar>
+      <operationList>
+        <hudson.plugins.build__timeout.operations.AbortOperation/>
+      </operationList>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+  </buildWrappers>
+</project>
