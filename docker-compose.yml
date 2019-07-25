@@ -55,6 +55,8 @@ services:
     image: docker:stable-dind
     container_name: docker-service
     privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=
     expose:
       - 2375
     volumes:
